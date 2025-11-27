@@ -1,0 +1,25 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.optionButton {
+    background: var(--accent-color);
+    color: var(--text-color);
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 4px solid #E6C200;
+    /* Darker shade of accent */
+}
+
+.optionButton:hover {
+    transform: translateY(-2px);
+}
+
+.optionButton:active {
+    transform: translateY(1px);
+    border-bottom-width: 2px;
+}

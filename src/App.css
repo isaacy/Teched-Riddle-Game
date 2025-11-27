@@ -1,0 +1,93 @@
+.app-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.red-text {
+  color: var(--primary-color);
+}
+
+.progress {
+  font-size: 1rem;
+  color: #7f8c8d;
+  font-weight: bold;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  /* Left column wider */
+  gap: 4rem;
+  align-items: start;
+}
+
+.right-column {
+  background: #f9f9f9;
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.right-column h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
+}
+
+.navigation-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-button {
+  background: transparent;
+  border: 2px solid #ddd;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.nav-button:hover {
+  border-color: #bbb;
+  color: #333;
+}
+
+.new-button {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.new-button:hover {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .right-column {
+    order: 2;
+    /* Ensure options come after question on mobile */
+  }
+}
