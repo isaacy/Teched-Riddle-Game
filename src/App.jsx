@@ -5,11 +5,15 @@ import AnswerInput from './components/AnswerInput';
 import FeedbackModal from './components/FeedbackModal';
 import './App.css';
 
+import { checkAnswerWithAI } from './services/gemini';
+
 function App() {
   const [currentRiddleIndex, setCurrentRiddleIndex] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [shuffledRiddles, setShuffledRiddles] = useState([]);
+  const [aiFeedback, setAiFeedback] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Shuffle riddles on load
@@ -21,24 +25,35 @@ function App() {
 
   const currentRiddle = shuffledRiddles[currentRiddleIndex];
 
-  const handleAnswer = (selectedOption) => {
-    const correct = selectedOption === currentRiddle.answer;
-    setIsCorrect(correct);
+  const handleAnswer = async (userAnswer) => {
+    setIsLoading(true);
+    const result = await checkAnswerWithAI(
+      currentRiddle.question,
+      currentRiddle.answer,
+      userAnswer
+    );
+    setIsLoading(false);
+
+    setIsCorrect(result.isCorrect);
+    setAiFeedback(result.feedback);
     setShowFeedback(true);
   };
 
   const handleNext = () => {
     setShowFeedback(false);
+    setAiFeedback(''); // Clear AI feedback on next
     setCurrentRiddleIndex((prev) => (prev + 1) % shuffledRiddles.length);
   };
 
   const handlePrevious = () => {
     setShowFeedback(false);
+    setAiFeedback(''); // Clear AI feedback on previous
     setCurrentRiddleIndex((prev) => (prev - 1 + shuffledRiddles.length) % shuffledRiddles.length);
   };
 
   const handleTryAgain = () => {
     setShowFeedback(false);
+    setAiFeedback('');
   };
 
   const handleSeeAnswer = () => {
@@ -95,6 +110,7 @@ function App() {
         <FeedbackModal
           isCorrect={isCorrect}
           explanation={currentRiddle.explanation}
+          aiFeedback={aiFeedback}
           videoUrl={currentRiddle.videoUrl}
           onNext={handleNext}
           onTryAgain={handleTryAgain}

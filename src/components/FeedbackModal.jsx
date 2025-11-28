@@ -1,35 +1,50 @@
 import React from 'react';
 import styles from './FeedbackModal.module.css';
 
-const FeedbackModal = ({ isCorrect, explanation, videoUrl, onNext, onTryAgain, onSeeAnswer }) => {
+const FeedbackModal = ({ isCorrect, onTryAgain, onSeeAnswer, videoUrl, aiFeedback }) => {
     return (
         <div className={styles.overlay}>
-            <div className={`${styles.modal} ${isCorrect ? styles.correct : styles.incorrect}`}>
-                <h2>{isCorrect ? '🎉 Correct! 🎉' : '😢 Incorrect'}</h2>
+            <div className={styles.modal}>
+                <div className={styles.icon}>
+                    {isCorrect ? '🎉' : '🤔'}
+                </div>
 
-                {isCorrect ? (
-                    <>
-                        <p className={styles.explanation}>{explanation}</p>
-                        {videoUrl && (
-                            <a href={videoUrl} target="_blank" rel="noopener noreferrer" className={styles.videoLink}>
-                                📺 Watch Explanation Video
+                <h2 className={isCorrect ? styles.correctTitle : styles.incorrectTitle}>
+                    {isCorrect ? 'Great Job!' : 'Not Quite...'}
+                </h2>
+
+                <p className={styles.message}>
+                    {aiFeedback || (isCorrect
+                        ? "You solved the riddle correctly!"
+                        : "That's not the answer we're looking for.")}
+                </p>
+
+                <div className={styles.actions}>
+                    {!isCorrect ? (
+                        <>
+                            <button onClick={onTryAgain} className={styles.tryAgainButton}>
+                                Try Again
+                            </button>
+                            <button onClick={onSeeAnswer} className={styles.seeAnswerButton}>
+                                See Answer
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <a
+                                href={videoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.videoButton}
+                            >
+                                📺 Watch Explanation
                             </a>
-                        )}
-                        <button onClick={onNext} className={styles.nextButton}>
-                            Next Riddle ➡️
-                        </button>
-                    </>
-                ) : (
-                    <div className={styles.buttonGroup}>
-                        <p>Don't give up yet!</p>
-                        <button onClick={onTryAgain} className={styles.tryAgainButton}>
-                            🔄 Try Again
-                        </button>
-                        <button onClick={onSeeAnswer} className={styles.seeAnswerButton}>
-                            👀 See Answer
-                        </button>
-                    </div>
-                )}
+                            <button onClick={onTryAgain} className={styles.closeButton}>
+                                Close
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
